@@ -407,108 +407,7 @@ client.on('message',async message => {
     }
   });
 
-client.on('ready', () => {
-    console.log(`Logged in as ${client.user.tag}!`);
-  });
-  /*جميع الحقوق محفوظهه لريبل ولسيرفر كودز
-  رآح يرسل للأونر تحذير + م يتطلب ملفات سويته لكم داتا مؤقت
-  سو روم بأسم log 
-  أو غيره من الكود عشان يرسل هنا التحذير
-  nvm i 10 
-  nvm use 10
-  npm i discord.js
-  */
-  var guilds = {};
-  client.on('guildBanAdd', function(guild) {
-              const rebellog = client.channels.find("name", "th-log"),
-              Onumber = 3,
-    Otime = 10000
-  guild.fetchAuditLogs({
-      type: 22
-  }).then(audit => {
-      let banner = audit.entries.map(banner => banner.executor.id)
-      let bans = guilds[guild.id + banner].bans || 0 
-      guilds[guild.id + banner] = {
-          bans: 0
-      }
-        bans[guilds.id].bans += 1; 
-  if(guilds[guild.id + banner].bans >= Onumber) {
-  try {
-  let roles = guild.members.get(banner).roles.array();
-  guild.members.get(banner).removeRoles(roles);
-    guild.guild.member(banner).kick();
-  
-  } catch (error) {
-  console.log(error)
-  try {
-  guild.members.get(banner).ban();
-    rebellog.send(`<@!${banner.id}>
-  حآول العبث بالسيرفر @everyone`);
-  guild.owner.send(`<@!${banner.id}>
-  حآول العبث بالسيرفر ${guild.name}`)
-      setTimeout(() => {
-   guilds[guild.id].bans = 0;
-    },Otime)
-  } catch (error) {
-  console.log(error)
-  }
-  }
-  }
-  })
-  });
-   let channelc = {};
-    client.on('channelCreate', async (channel) => {
-    const rebellog = client.channels.find("name", "th-log"),
-    Oguild = channel.guild,
-    Onumber = 3,
-    Otime = 10000;
-    const audit = await channel.guild.fetchAuditLogs({limit: 1});
-    const channelcreate = audit.entries.first().executor;
-    console.log(` A ${channel.type} Channel called ${channel.name} was Created By ${channelcreate.tag}`);
-     if(!channelc[channelcreate.id]) {
-      channelc[channelcreate.id] = {
-      created : 0
-       }
-   }
-   channelc[channelcreate.id].created += 1;
-   if(channelc[channelcreate.id].created >= Onumber ) {
-      Oguild.members.get(channelcreate.id).kick();
-  rebellog.send(`<@!${channelcreate.id}>
-  حآول العبث بالسيرفر @everyone`);
-  channel.guild.owner.send(`<@!${channelcreate.id}>
-  حآول العبث بالسيرفر ${channel.guild.name}`)
-  }
-    setTimeout(() => {
-   channelc[channelcreate.id].created = 0;
-    },Otime)
-    });
-  
-  let channelr = {};
-    client.on('channelDelete', async (channel) => {
-    const rebellog = client.channels.find("name", "th-log"),
-    Oguild = channel.guild,
-    Onumber = 3,
-    Otime = 10000;
-    const audit = await channel.guild.fetchAuditLogs({limit: 1});
-    const channelremover = audit.entries.first().executor;
-    console.log(` A ${channel.type} Channel called ${channel.name} was deleted By ${channelremover.tag}`);
-     if(!channelr[channelremover.id]) {
-      channelr[channelremover.id] = {
-      deleted : 0
-       }
-   }
-   channelr[channelremover.id].deleted += 1;
-   if(channelr[channelremover.id].deleted >= Onumber ) {
-    Oguild.guild.member(channelremover).kick();
-  rebellog.send(`<@!${channelremover.id}>
-  حآول العبث بالسيرفر @everyone`);
-  channel.guild.owner.send(`<@!${channelremover.id}>
-  حآول العبث بالسيرفر ${channel.guild.name}`)
-  }
-    setTimeout(() => {
-   channelr[channelremover.id].deleted = 0;
-    },Otime)
-    });
+
   
 const clans = JSON.parse(fs.readFileSync("./ClanSystem/ClanSystem.json", 'UTF8'));
 const system = JSON.parse(fs.readFileSync("./ClanSystem/ClanStats.json", 'UTF8'));
@@ -1078,6 +977,7 @@ client.on('message', async message => {
         if(!time.match(/[1-60][s,m,h,d,w]/g)) return message.channel.send('**- اكتب وقت حقيقي**');
         if(!muteReason) return message.channel.send("**- اكتب السبب**");
         message.guild.member(mutePerson).addRole(muteRole);
+	     message.channel.send(`**:white_check_mark: ${user} has been muted !**`)
         let muteEmbed = new Discord.RichEmbed()
         .setTitle(`New Muted User`)
         .addField('Muted By:',message.author,true)
@@ -1087,7 +987,6 @@ client.on('message', async message => {
         .setFooter(message.author.username,message.author.avatarURL);
         let incidentchannel = message.guild.channels.find(`name`, "incidents");
         if(!incidentchannel) return message.channel.send("Can't find incidents channel.");
- message.channel.send(`**:white_check_mark: ${user} has been muted !**`)
         incidentchannel.send(muteEmbed)
 	    message.delete()
         mutePerson.send(`**You Are has been muted in ${message.guild.name} reason: ${muteReason}**`)
