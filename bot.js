@@ -1611,8 +1611,9 @@ client.on("ready", () => {
  
  
 client.on('guildMemberAdd', member => {
+let invites = {}
   member.guild.fetchInvites().then(guildInvites => {
-    const ei = guildInvites[member.guild.id];
+    const ei = invites[member.guild.id];
     const invite = guildInvites.find(i => ei.get(i.code).uses < i.uses);
     const inviter = client.users.get(invite.inviter.id);
     const stewart = member.guild.channels.find("name", "💬welcome");
