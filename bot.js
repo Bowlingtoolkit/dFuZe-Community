@@ -1594,7 +1594,7 @@ welcomer.sendFile(canvas.toBuffer())
       });                    
 });
 client.on("guildMemberAdd", member => {
-    let welcomer = member.guild.channels.find('name', 'welcome');
+    let welcomer = member.guild.channels.find('name', '💬welcome');
     let memberavatar = member.user.avatarURL
       if (!welcomer) return;
       if(welcomer) {
